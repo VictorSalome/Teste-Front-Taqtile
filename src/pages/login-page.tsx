@@ -13,6 +13,7 @@ export const LoginPage = () => {
   });
   const [serverError, setServerError] = useState<string>('');
   console.log(serverError);
+  
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token);
