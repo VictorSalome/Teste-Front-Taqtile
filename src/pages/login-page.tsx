@@ -3,6 +3,7 @@ import { IValidationLogin } from '../interfaces/interface-login';
 import { validateEmail, validatePassword } from '../utils/validate-login';
 import { ApolloError, useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../graphql/query';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -14,12 +15,14 @@ export const LoginPage = () => {
   const [serverError, setServerError] = useState<string>('');
   console.log(serverError);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token);
       console.log('Login Successful', data);
       setLoading(false);
+      navigate('/user-list-page');
     },
     onError: (error: ApolloError) => {
       if (error.graphQLErrors.length > 0) {
