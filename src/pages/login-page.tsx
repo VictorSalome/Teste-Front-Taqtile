@@ -13,11 +13,13 @@ export const LoginPage = () => {
   });
   const [serverError, setServerError] = useState<string>('');
   console.log(serverError);
-  
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token);
       console.log('Login Successful', data);
+      setLoading(false);
     },
     onError: (error: ApolloError) => {
       if (error.graphQLErrors.length > 0) {
@@ -25,6 +27,7 @@ export const LoginPage = () => {
       } else {
         console.log('Error', error);
       }
+      setLoading(false);
     },
   });
 
@@ -50,6 +53,7 @@ export const LoginPage = () => {
     setServerError('');
 
     if (!emailError && !passwordError) {
+      setLoading(true);
       try {
         await login({ variables: { email, password } });
       } catch (error: any) {
@@ -58,6 +62,7 @@ export const LoginPage = () => {
         } else {
           console.error('Error:', error);
         }
+        setLoading(false);
       }
     }
   };
@@ -79,7 +84,10 @@ export const LoginPage = () => {
           {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
         </div>
         {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-        <button type='submit'>Entrar</button>
+        <button type='submit' disabled={loading}>
+          Entrar
+        </button>
+        {loading && <div className='spinner'>Carregando...</div>}
       </form>
     </main>
   );
