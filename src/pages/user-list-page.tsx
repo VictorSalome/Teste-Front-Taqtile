@@ -1,29 +1,46 @@
+import { useQuery } from '@apollo/client';
+import { USERS_QUERY } from '../graphql/query';
+import { IListUsers } from '../interfaces/inteface-users';
+
 export const UserListPage = () => {
-  const users = [
-    { id: 1, name: 'Alice', email: 'alice@example.com' },
-    { id: 2, name: 'Bob', email: 'bob@example.com' },
-    { id: 3, name: 'Charlie', email: 'charlie@example.com' },
-    { id: 4, name: 'Diana', email: 'diana@example.com' },
-    { id: 5, name: 'Eve', email: 'eve@example.com' },
-  ];
+  const token = localStorage.getItem('token');
+  const { data, loading, error } = useQuery<IListUsers>(USERS_QUERY, {
+    variables: {
+      offset: 0,
+      limit: 5,
+    },
+    context: {
+      headers: {
+        Authorization: token,
+      },
+    },
+  });
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
     <>
       <h2>Lista de Usuários</h2>
-      <table className='table table-striped'>
+      <table className='table'>
         <thead>
           <tr>
             <th>Nome</th>
             <th>E-mail</th>
           </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
+          {data?.users.nodes.map((user) => (
             <tr key={user.id} className='table-primary'>
               <td>{user.name}</td>
               <td>{user.email}</td>
             </tr>
           ))}
-        </tbody>
+        </thead>
+        <tbody>{}</tbody>
       </table>
     </>
   );
