@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { IValidationLogin } from '../interfaces/interface-login';
-import { validateEmail, validatePassword } from '../utils/validate-login';
+import { IValidationLogin } from '../../interfaces/interface-login';
+import { validateEmail, validatePassword } from '../../utils/validate-login';
 import { ApolloError, useMutation } from '@apollo/client';
-import { LOGIN_MUTATION } from '../graphql/mutation';
+import { LOGIN_MUTATION } from '../../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
