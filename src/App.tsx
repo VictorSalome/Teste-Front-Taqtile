@@ -3,7 +3,7 @@ import './App.css';
 import { LoginPage } from './pages/login-page';
 
 
-function App() {
+export const App =() => {
   return (
     <div>
       <LoginPage />
@@ -11,4 +11,4 @@ function App() {
   );
 }
 
-export default App;
+
