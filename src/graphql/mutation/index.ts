@@ -1,5 +1,4 @@
-
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 //Login do Usuário Mutation
 export const LOGIN_MUTATION = gql`
@@ -12,5 +11,19 @@ export const LOGIN_MUTATION = gql`
         email
       }
     }
-  } 
+  }
+`;
+
+// Registrar novo usuario
+export const REGISTER_MUTATION = gql`
+  mutation CreateUser($createUser: UserInput!) {
+    createUser(data: $createUser) {
+      birthDate
+      email
+      id
+      name
+      phone
+      role
+    }
+  }
 `;
