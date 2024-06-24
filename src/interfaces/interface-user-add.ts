@@ -3,5 +3,6 @@ export interface IUserAdd {
   email: string;
   phone: string;
   birthDate: string;
+  password: string;
   role: string;
 }

@@ -1,22 +1,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { IValidationLogin } from '../../interfaces/interface-login';
-import { validateEmail, validatePassword } from '../../utils/validate-login';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { ApolloError, useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
+import { IValidationLogin } from '../../interfaces/interface-login';
+import { SchemaValidationLogin } from '../../schemas';
 
 export const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
-  } = useForm<IValidationLogin>();
+  } = useForm<IValidationLogin>({
+    resolver: yupResolver(SchemaValidationLogin),
+  });
+  const navigate = useNavigate();
   const [serverError, setServerError] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);
-  const navigate = useNavigate();
-
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token.substring(7));
@@ -24,7 +25,6 @@ export const LoginPage = () => {
       setLoading(false);
       navigate('/user-list-page');
     },
-
     onError: (error: ApolloError) => {
       if (error.graphQLErrors.length > 0) {
         setServerError(error.graphQLErrors[0].message);
@@ -36,25 +36,16 @@ export const LoginPage = () => {
   });
 
   const onSubmit = async (data: IValidationLogin) => {
-    const emailError = validateEmail(data.email);
-    const passwordError = validatePassword(data.password);
-
-    setError('email', { message: emailError });
-    setError('password', { message: passwordError });
-    setServerError('');
-
-    if (!emailError && !passwordError) {
-      setLoading(true);
-      try {
-        await login({ variables: { email: data.email, password: data.password } });
-      } catch (error: any) {
-        if (error.graphQLErrors.length > 0) {
-          setServerError(error.graphQLErrors[0].message);
-        } else {
-          console.error('Error:', error);
-        }
-        setLoading(false);
+    setLoading(true);
+    try {
+      await login({ variables: { email: data.email, password: data.password } });
+    } catch (error: any) {
+      if (error.graphQLErrors.length > 0) {
+        setServerError(error.graphQLErrors[0].message);
+      } else {
+        console.error('Error:', error);
       }
+      setLoading(false);
     }
   };
 
@@ -66,7 +57,7 @@ export const LoginPage = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Email:</label>
-          <input {...register('email')} />
+          <input type='text' {...register('email')} />
           {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
         </div>
         <div>
