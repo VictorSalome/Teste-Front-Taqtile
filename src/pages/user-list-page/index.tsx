@@ -1,13 +1,17 @@
 import { useQuery } from '@apollo/client';
-import { USERS_QUERY } from '../graphql/query';
-import { IListUsers } from '../interfaces/inteface-users';
+import { USERS_QUERY } from '../../graphql/query';
+import { IListUsers } from '../../interfaces/inteface-users';
+import { useState } from 'react';
 
 export const UserListPage = () => {
   const token = localStorage.getItem('token');
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
+
   const { data, loading, error } = useQuery<IListUsers>(USERS_QUERY, {
     variables: {
-      offset: 0,
-      limit: 5,
+      offset: offset,
+      limit: limit,
     },
     context: {
       headers: {
@@ -15,6 +19,14 @@ export const UserListPage = () => {
       },
     },
   });
+
+  const handleNextPage = () => {
+    setOffset(offset + limit);
+  };
+
+  const handlePrevPage = () => {
+    setOffset(Math.max(offset - limit, 0));
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -33,15 +45,22 @@ export const UserListPage = () => {
             <th>Nome</th>
             <th>E-mail</th>
           </tr>
+        </thead>
+        <tbody>
           {data?.users.nodes.map((user) => (
             <tr key={user.id} className='table-primary'>
               <td>{user.name}</td>
               <td>{user.email}</td>
             </tr>
           ))}
-        </thead>
-        <tbody>{}</tbody>
+        </tbody>
       </table>
+      <div>
+        <button onClick={handlePrevPage} disabled={offset === 0}>
+          Anterior
+        </button>
+        <button onClick={handleNextPage}>Próximo</button>
+      </div>
     </>
   );
 };
