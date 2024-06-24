@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { IValidationLogin } from '../../interfaces/interface-login';
 import { validateEmail, validatePassword } from '../../utils/validate-login';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -6,15 +7,14 @@ import { LOGIN_MUTATION } from '../../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [errors, setErrors] = useState<IValidationLogin>({
-    email: '',
-    password: '',
-  });
-  const [serverError, setServerError] = useState<string>('');
-  console.log(serverError);
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<IValidationLogin>();
+  const [serverError, setServerError] = React.useState<string>('');
+  const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
   const [login] = useMutation(LOGIN_MUTATION, {
@@ -35,31 +35,18 @@ export const LoginPage = () => {
     },
   });
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setErrors((prevErrors) => ({ ...prevErrors, email: '' }));
-    setServerError('');
-  };
+  const onSubmit = async (data: IValidationLogin) => {
+    const emailError = validateEmail(data.email);
+    const passwordError = validatePassword(data.password);
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
-    setServerError('');
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
-
-    setErrors({ email: emailError, password: passwordError });
+    setError('email', { message: emailError });
+    setError('password', { message: passwordError });
     setServerError('');
 
     if (!emailError && !passwordError) {
       setLoading(true);
       try {
-        await login({ variables: { email, password } });
+        await login({ variables: { email: data.email, password: data.password } });
       } catch (error: any) {
         if (error.graphQLErrors.length > 0) {
           setServerError(error.graphQLErrors[0].message);
@@ -76,16 +63,16 @@ export const LoginPage = () => {
       <header>
         <h1>Bem-vindo(a) à Taqtile!</h1>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Email:</label>
-          <input value={email} onChange={handleEmailChange} />
-          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+          <input {...register('email')} />
+          {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
         </div>
         <div>
           <label>Senha:</label>
-          <input type='password' value={password} onChange={handlePasswordChange} />
-          {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+          <input type='password' {...register('password')} />
+          {errors.password && <p style={{ color: 'red' }}>{errors.password.message}</p>}
         </div>
         {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
         <button type='submit' disabled={loading}>
