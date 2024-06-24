@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from '../../graphql/query';
 import { IListUsers } from '../../interfaces/inteface-users';
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const UserListPage = () => {
   const token = localStorage.getItem('token');
@@ -20,6 +21,10 @@ export const UserListPage = () => {
     },
   });
 
+ 
+const navigate = useNavigate();
+
+
   const handleNextPage = () => {
     setOffset(offset + limit);
   };
@@ -35,6 +40,7 @@ export const UserListPage = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
 
   return (
     <>
@@ -60,6 +66,7 @@ export const UserListPage = () => {
           Anterior
         </button>
         <button onClick={handleNextPage}>Próximo</button>
+        <button onClick={() => navigate('/user-add-page')}>Adicionar Usuário</button>
       </div>
     </>
   );
