@@ -1,16 +1,16 @@
+import { gql } from '@apollo/client';
 
-import { gql } from "@apollo/client";
-
-//Login do Usuário Mutation
-export const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(data: { email: $email, password: $password }) {
-      token
-      user {
+export const USERS_QUERY = gql`
+  query ListUsers($offset: Int!, $limit: Int!) {
+    users(data: { offset: $offset, limit: $limit }) {
+      nodes {
         id
         name
         email
+        phone
+        birthDate
+        role
       }
     }
-  } 
+  }
 `;
