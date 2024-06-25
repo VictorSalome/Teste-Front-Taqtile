@@ -1,8 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { LoginPage } from '../pages/login-page';
-import { UserListPage } from '../pages/user-list-page';
-import { UserAddPage } from '../pages/user-add-page';
-import { DetailsUserPage } from '../pages/details-user-page';
+import { DetailsUserPage, LoginPage, UserAddPage, UserListPage } from '../pages';
 
 export const AppRouter: React.FC = () => {
   return (
