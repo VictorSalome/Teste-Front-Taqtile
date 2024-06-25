@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -15,9 +15,12 @@ export const LoginPage = () => {
   } = useForm<IValidationLogin>({
     resolver: yupResolver(SchemaValidationLogin),
   });
+
   const navigate = useNavigate();
-  const [serverError, setServerError] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [serverError, setServerError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token.substring(7));
@@ -50,27 +53,51 @@ export const LoginPage = () => {
   };
 
   return (
-    <main className='flex flex-col items-center justify-center h-screen bg-gray-100'>
-      <header className='mb-10'>
-        <h1 className='text-red-500 text-center text-4xl font-bold'>Bem-vindo(a) à Taqtile!</h1>
+    <>
+      <header className='mt-20 mb-16 md:mt-52 '>
+        <h1 className='text-taqtile-font-primary text-center text-3xl font-bold'>Bem-vindo(a) à Taqtile!</h1>
       </header>
-      <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-sm'>
-        <div className='mb-4'>
-          <label className='block text-gray-700 text-sm font-bold mb-2'>Email:</label>
-          <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type='text' {...register('email')} />
-          {errors.email && <p className='text-red-500 text-xs italic'>{errors.email.message}</p>}
-        </div>
-        <div className='mb-6'>
-          <label className='block text-gray-700 text-sm font-bold mb-2'>Senha:</label>
-          <input className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' type='password' {...register('password')} />
-          {errors.password && <p className='text-red-500 text-xs italic'>{errors.password.message}</p>}
-        </div>
-        {serverError && <p className='text-red-500 text-xs italic'>{serverError}</p>}
-        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline' type='submit' disabled={loading}>
-          Entrar
-        </button>
-        {loading && <div className='spinner w-8 h-8 border-t-2 border-b-2 border-blue-500 rounded-full ml-4 animate-spin'></div>}
-      </form>
-    </main>
+
+      <main className='flex flex-col items-center justify-center bg-taqtile-background'>
+        <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-sm p-4'>
+          <div className='mb-4'>
+            <label className='block text-taqtile-font-primary text-base font-bold mb-2'>E-mail</label>
+            <input
+              className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+              type='text'
+              {...register('email')}
+            />
+            {errors.email && <p className='text-red-500 text-xs italic mt-3'>{errors.email.message}</p>}
+          </div>
+          <div className='mb-6'>
+            <label className='block text-taqtile-font-primary text-base font-bold mb-2'>Senha</label>
+            <div className='relative'>
+              <input
+                className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                type={showPassword ? 'text' : 'password'}
+                {...register('password')}
+              />
+              <button
+                type='button'
+                className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5'
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? 'Ocultar' : 'Mostrar'}
+              </button>
+            </div>
+            {errors.password && <p className='text-red-500 text-xs italic mt-3'>{errors.password.message}</p>}
+          </div>
+          {serverError && <p className='text-red-500 text-xs italic'>{serverError}</p>}
+          <button
+            className='bg-taqtile-green w-full h-12 text-white font-bold py-2 px-4 rounded-full pointer focus:outline-none focus:shadow-outline'
+            type='submit'
+            disabled={loading}
+          >
+            Entrar
+          </button>
+          {loading && <div className='spinner w-8 h-8 border-t-2 border-b-2 border-blue-500 ml-4 animate-spin'></div>}
+        </form>
+      </main>
+    </>
   );
 };
