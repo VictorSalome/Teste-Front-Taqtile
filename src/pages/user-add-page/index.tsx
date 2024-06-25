@@ -44,56 +44,59 @@ export const UserAddPage: React.FC = () => {
   }, [redirected, navigate]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Nome</label>
-        <Controller name='name' control={control} render={({ field }) => <input id='name' {...field} />} />
-        {errors.name && <p>{errors.name.message}</p>}
-      </div>
+    <>
+      <h1>Adicionar Usuário</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>Nome</label>
+          <Controller name='name' control={control} render={({ field }) => <input id='name' {...field} />} />
+          {errors.name && <p>{errors.name.message}</p>}
+        </div>
 
-      <div>
-        <label>Email</label>
-        <Controller name='email' control={control} render={({ field }) => <input id='email' type='email' {...field} />} />
-        {errors.email && <p>{errors.email.message}</p>}
-      </div>
+        <div>
+          <label>Email</label>
+          <Controller name='email' control={control} render={({ field }) => <input id='email' type='email' {...field} />} />
+          {errors.email && <p>{errors.email.message}</p>}
+        </div>
 
-      <div>
-        <label>Senha</label>
-        <Controller name='password' control={control} render={({ field }) => <input id='password' type='password' {...field} />} />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
+        <div>
+          <label>Senha</label>
+          <Controller name='password' control={control} render={({ field }) => <input id='password' type='password' {...field} />} />
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
 
-      <div>
-        <label>Telefone</label>
-        <Controller name='phone' control={control} render={({ field }) => <input id='phone' {...field} />} />
-        {errors.phone && <p>{errors.phone.message}</p>}
-      </div>
+        <div>
+          <label>Telefone</label>
+          <Controller name='phone' control={control} render={({ field }) => <input id='phone' {...field} />} />
+          {errors.phone && <p>{errors.phone.message}</p>}
+        </div>
 
-      <div>
-        <label>Data de nascimento</label>
-        <Controller
-          name='birthDate'
-          control={control}
-          render={({ field }) => (
-            <input id='birthDate' type='date' {...field} value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''} />
-          )}
-        />
-        {errors.birthDate && <p>{errors.birthDate.message}</p>}
-      </div>
+        <div>
+          <label>Data de nascimento</label>
+          <Controller
+            name='birthDate'
+            control={control}
+            render={({ field }) => (
+              <input id='birthDate' type='date' {...field} value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''} />
+            )}
+          />
+          {errors.birthDate && <p>{errors.birthDate.message}</p>}
+        </div>
 
-      <div>
-        <label>Cargo</label>
-        <Controller name='role' control={control} render={({ field }) => <input id='role' {...field} />} />
-        {errors.role && <p>{errors.role.message}</p>}
-      </div>
+        <div>
+          <label>Cargo</label>
+          <Controller name='role' control={control} render={({ field }) => <input id='role' {...field} />} />
+          {errors.role && <p>{errors.role.message}</p>}
+        </div>
 
-      <button type='submit' disabled={loading}>
-        Enviar
-      </button>
+        <button type='submit' disabled={loading}>
+          Enviar
+        </button>
 
-      {loading && <div className='spinner'>Carregando...</div>}
+        {loading && <div className='spinner'>Carregando...</div>}
 
-      {error && <p style={{ color: 'red' }}>Erro ao realizar cadastro.</p>}
-    </form>
+        {error && <p style={{ color: 'red' }}>Erro ao realizar cadastro.</p>}
+      </form>
+    </>
   );
 };
