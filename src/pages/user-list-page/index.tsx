@@ -47,9 +47,7 @@ export const UserListPage = () => {
           <tr>
             <th>Nome</th>
             <th>E-mail</th>
-            <th>Telefone</th>
-            <th>Data de nascimento</th>
-            <th>Cargo</th>
+            <th>Detalhes do Usuário</th>
           </tr>
         </thead>
         <tbody>
@@ -57,9 +55,9 @@ export const UserListPage = () => {
             <tr key={user.id} className='table-primary'>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>{user.phone}</td>
-              <td>{user.birthDate}</td>
-              <td>{user.role}</td>
+              <td>
+                <button onClick={() => navigate(`/details-user-page/${user.id}`)}>Detalhes</button>
+              </td>
             </tr>
           ))}
         </tbody>

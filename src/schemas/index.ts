@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { passwordRegex } from '../utils/validate-login';
 
 //schema de validação de login
-// Esquema de validação com Yup
+
 export const SchemaValidationLogin = yup.object().shape({
   email: yup.string().email('Email inválido').required('Email é obrigatório'),
   password: yup
