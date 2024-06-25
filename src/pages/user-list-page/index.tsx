@@ -41,33 +41,53 @@ export const UserListPage = () => {
 
   return (
     <>
-      <h2>Lista de Usuários</h2>
-      <table className='table'>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Detalhes do Usuário</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.users.nodes.map((user) => (
-            <tr key={user.id} className='table-primary'>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>
-                <button onClick={() => navigate(`/details-user-page/${user.id}`)}>Detalhes</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div>
-        <button onClick={handlePrevPage} disabled={offset === 0}>
-          Anterior
-        </button>
-        <button onClick={handleNextPage}>Próximo</button>
-        <button onClick={() => navigate('/user-add-page')}>Adicionar Usuário</button>
+      <div className='bg-white shadow overflow-hidden sm:rounded-lg'>
+        <h2 className='text-lg font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários da Taqtile</h2>
+        <div className='overflow-x-auto'>
+          <table className='min-w-full divide-y divide-gray-200'>
+            <thead className='bg-gray-100'>
+              <tr>
+                <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>
+                  Nome
+                </th>
+                <th scope='col' className='px-6 py-3 text-left text-xs font-medium taqtile-font-secondary uppercase tracking-wider'>
+                  E-mail
+                </th>
+                <th scope='col' className='px-6 py-3 text-left text-xs font-medium taqtile-font-secondary uppercase tracking-wider'>
+                  Detalhes do Usuário
+                </th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200'>
+              {data?.users.nodes.map((user) => (
+                <tr key={user.id}>
+                  <td className='px-6 py-4 whitespace-nowrap'>{user.name}</td>
+                  <td className='px-6 py-4 whitespace-nowrap'>{user.email}</td>
+                  <td className='px-6 py-4 whitespace-nowrap'>
+                    <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
+                      Detalhes
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className='p-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0'>
+          <button
+            className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md disabled:opacity-50'
+            onClick={handlePrevPage}
+            disabled={offset === 0}
+          >
+            Anterior
+          </button>
+          <button className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md' onClick={handleNextPage}>
+            Próximo
+          </button>
+          <button className='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md' onClick={() => navigate('/user-add-page')}>
+            Adicionar Usuário
+          </button>
+        </div>
       </div>
     </>
   );

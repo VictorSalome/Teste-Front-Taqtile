@@ -6,6 +6,7 @@ import { LOGIN_MUTATION } from '../../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
 import { IValidationLogin } from '../../interfaces/interface-login';
 import { SchemaValidationLogin } from '../../schemas';
+import { SpinerLoading } from '../../components';
 
 export const LoginPage = () => {
   const {
@@ -89,13 +90,12 @@ export const LoginPage = () => {
           </div>
           {serverError && <p className='text-red-500 text-xs italic'>{serverError}</p>}
           <button
-            className='bg-taqtile-green w-full h-12 text-white font-bold py-2 px-4 rounded-full pointer focus:outline-none focus:shadow-outline'
+            className={`bg-taqtile-green hover:bg-[#004440db] w-full h-12 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${loading ? 'opacity-50 cursor-not-allowed' : 'bg-taqtile-green hover:bg-[#004440db]'}`}
             type='submit'
             disabled={loading}
           >
-            Entrar
+            <span className='flex items-center justify-center '>{loading && <SpinerLoading />}Entrar</span>
           </button>
-          {loading && <div className='spinner w-8 h-8 border-t-2 border-b-2 border-blue-500 ml-4 animate-spin'></div>}
         </form>
       </main>
     </>
