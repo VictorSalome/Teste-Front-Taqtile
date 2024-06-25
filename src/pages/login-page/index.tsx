@@ -52,7 +52,7 @@ export const LoginPage = () => {
   return (
     <main>
       <header>
-        <h1>Bem-vindo(a) à Taqtile!</h1>
+        <h1 className='text-red-500 '>Bem-vindo(a) à Taqtile!</h1>
       </header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
