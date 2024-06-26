@@ -11,27 +11,42 @@ export const DetailsUserPage: React.FC = () => {
   });
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className='text-center mt-4'>Loading...</p>;
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <p className='text-center mt-4'>Error: {error.message}</p>;
   }
 
   if (!data || !data.user) {
-    return <p>User not found</p>;
+    return <p className='text-center mt-4'>User not found</p>;
   }
 
   const { user } = data;
 
   return (
-    <div>
-      <h2>Detalhes do Usuário</h2>
-      <p>Nome: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Telefone: {user.phone}</p>
-      <p>Data de Nascimento: {user.birthDate}</p>
-      <p>Cargo: {user.role}</p>
+    <div className='mx-auto max-w-lg p-6 bg-white rounded-xl shadow-md mt-4'>
+      <h2 className='text-2xl font-bold mb-4'>Detalhes do Usuário</h2>
+      <div className='mb-4'>
+        <p className='text-gray-700 font-bold'>Nome:</p>
+        <p className='text-gray-800'>{user.name}</p>
+      </div>
+      <div className='mb-4'>
+        <p className='text-gray-700 font-bold'>Email:</p>
+        <p className='text-gray-800'>{user.email}</p>
+      </div>
+      <div className='mb-4'>
+        <p className='text-gray-700 font-bold'>Telefone:</p>
+        <p className='text-gray-800'>{user.phone}</p>
+      </div>
+      <div className='mb-4'>
+        <p className='text-gray-700 font-bold'>Data de Nascimento:</p>
+        <p className='text-gray-800'>{user.birthDate}</p>
+      </div>
+      <div className='mb-4'>
+        <p className='text-gray-700 font-bold'>Cargo:</p>
+        <p className='text-gray-800'>{user.role}</p>
+      </div>
     </div>
   );
 };

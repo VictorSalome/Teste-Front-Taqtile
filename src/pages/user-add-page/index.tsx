@@ -45,7 +45,9 @@ export const UserAddPage: React.FC = () => {
 
   return (
     <>
-      <h1>Adicionar Usuário</h1>
+      <header>
+        <h1>Cadastro de Usuários</h1>
+      </header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Nome</label>
