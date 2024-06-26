@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from '../../graphql/query';
-import { IListUsers } from '../../interfaces/inteface-users';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IListUsers, INode } from '../../interfaces/inteface-users';
 
 export const UserListPage = () => {
   const token = localStorage.getItem('token');
@@ -11,8 +12,8 @@ export const UserListPage = () => {
 
   const { data, loading, error } = useQuery<IListUsers>(USERS_QUERY, {
     variables: {
-      offset: offset,
-      limit: limit,
+      offset,
+      limit,
     },
     context: {
       headers: {
@@ -24,77 +25,109 @@ export const UserListPage = () => {
   const navigate = useNavigate();
 
   const handleNextPage = () => {
-    setOffset(offset + limit);
+    if (data?.users.pageInfo.hasNextPage) {
+      setOffset(offset + limit);
+    }
   };
 
   const handlePrevPage = () => {
-    setOffset(Math.max(offset - limit, 0));
+    if (data?.users.pageInfo.hasPreviousPage) {
+      setOffset(Math.max(offset - limit, 0));
+    }
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div className='fixed inset-0 flex items-center justify-center'>Carregando...</div>;
   }
 
   if (error) {
     return <p>Error: {error.message}</p>;
   }
 
+  const pageInfo = data?.users.pageInfo;
+  const totalCount = data?.users.count || 0;
+  const currentPage = Math.floor(offset / limit) + 1;
+  const totalPages = Math.ceil(totalCount / limit);
+
   return (
-    <>
-      <div className='bg-white shadow sm:rounded-lg'>
-        <h2 className='text-lg font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários Taqtile</h2>
-        <div>
-          <table className='min-w-full divide-y divide-gray-200'>
-            <thead className='bg-gray-100'>
-              <tr>
-                <th scope='col' className='px-1 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>
-                  Nome
-                </th>
-                <th scope='col' className='px-1 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>
-                  E-mail
-                </th>
-                <th scope='col' className='px-1 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>
-                  Detalhes
-                </th>
+    <div className='bg-white shadow sm:rounded-lg'>
+      <h2 className='text-lg font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários Taqtile</h2>
+      <div className='overflow-x-auto'>
+        <table className='min-w-full divide-y divide-gray-200'>
+          <thead className='bg-gray-100'>
+            <tr>
+              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>Nome</th>
+              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>E-mail</th>
+              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody className='bg-white divide-y divide-gray-200'>
+            {data?.users.nodes.map((user: INode) => (
+              <tr key={user.id}>
+                <td className='px-4 py-3'>{user.name}</td>
+                <td className='px-4 py-3'>{user.email}</td>
+                <td className='px-4 py-3'>
+                  <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
+                    Detalhes
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody className='bg-white divide-y divide-gray-200'>
-              {data?.users.nodes.map((user) => (
-                <tr key={user.id}>
-                  <td className='px-1 py-3'>{user.name}</td>
-                  <td className='px-1 py-3'>{user.email}</td>
-                  <td className='px-1 py-3'>
-                    <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
-                      Detalhes
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className='p-4 flex justify-between items-center flex-wrap gap-2'>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className='flex justify-center items-center p-4 border-t border-gray-200'>
+        <nav className='flex gap-x-2' aria-label='Pagination'>
           <button
-            className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md disabled:opacity-50'
+            className={`cursor-pointer rounded-l-md ${offset === 0 ? 'text-gray-500' : 'text-gray-700'}`}
             onClick={handlePrevPage}
             disabled={offset === 0}
           >
-            Anterior
-          </button>
-          <button className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md' onClick={handleNextPage}>
-            Próximo
-          </button>
-          <button
-            className='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md flex items-center space-x-2'
-            onClick={() => navigate('/user-add-page')}
-          >
-            <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 6v6m0 0v6m0-6h6m-6 0H6' />
+            <svg
+              className='h-5 w-5'
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+            >
+              <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19l-7.5-7.5 7.5-7.5' />
             </svg>
-            <span>Adicionar</span>
           </button>
-        </div>
+          <ul className='flex flex-wrap gap-x-2'>
+            {Array.from({ length: totalPages }, (_, index) => index + 1)
+              .filter((page) => page <= currentPage + 3 && page >= currentPage - 4)
+              .map((page) => (
+                <li
+                  key={page}
+                  className={`w-8 h-8 flex items-center justify-center rounded-full ${page === currentPage ? 'bg-gray-600 text-white' : 'text-gray-500'}`}
+                >
+                  {page === currentPage - 4 || page === currentPage + 3 ? (
+                    '...'
+                  ) : (
+                    <button onClick={() => setOffset((page - 1) * limit)}>{page}</button>
+                  )}
+                </li>
+              ))}
+          </ul>
+          <button
+            className={`cursor-pointer rounded-r-md ${!pageInfo?.hasNextPage ? 'text-gray-500' : 'text-gray-700'}`}
+            onClick={handleNextPage}
+            disabled={!pageInfo?.hasNextPage}
+          >
+            <svg
+              className='h-5 w-5'
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+            >
+              <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
+            </svg>
+          </button>
+        </nav>
       </div>
-    </>
+    </div>
   );
 };
