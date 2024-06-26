@@ -1,14 +1,31 @@
 import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from '../../graphql/query';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IListUsers, INode } from '../../interfaces/inteface-users';
 
 export const UserListPage = () => {
   const token = localStorage.getItem('token');
   const [offset, setOffset] = useState(0);
-  const limit = 10;
+  const [limit, setLimit] = useState(12);
+
+  const navigate = useNavigate();
+
+  const updateLimitBasedOnWindowSize = () => {
+    if (window.innerWidth >= 768) {
+      setLimit(24);
+    } else {
+      setLimit(5);
+    }
+  };
+
+  useEffect(() => {
+    updateLimitBasedOnWindowSize();
+
+    window.addEventListener('resize', updateLimitBasedOnWindowSize);
+    return () => window.removeEventListener('resize', updateLimitBasedOnWindowSize);
+  }, []);
 
   const { data, loading, error } = useQuery<IListUsers>(USERS_QUERY, {
     variables: {
@@ -21,8 +38,6 @@ export const UserListPage = () => {
       },
     },
   });
-
-  const navigate = useNavigate();
 
   const handleNextPage = () => {
     if (data?.users.pageInfo.hasNextPage) {
@@ -51,30 +66,20 @@ export const UserListPage = () => {
 
   return (
     <div className='bg-white shadow sm:rounded-lg'>
-      <h2 className='text-lg font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários Taqtile</h2>
-      <div className='overflow-x-auto'>
-        <table className='min-w-full divide-y divide-gray-200'>
-          <thead className='bg-gray-100'>
-            <tr>
-              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>Nome</th>
-              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>E-mail</th>
-              <th className='px-4 py-2 text-left text-xs font-medium text-taqtile-font-secondary uppercase tracking-wider'>Detalhes</th>
-            </tr>
-          </thead>
-          <tbody className='bg-white divide-y divide-gray-200'>
-            {data?.users.nodes.map((user: INode) => (
-              <tr key={user.id}>
-                <td className='px-4 py-3'>{user.name}</td>
-                <td className='px-4 py-3'>{user.email}</td>
-                <td className='px-4 py-3'>
-                  <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
-                    Detalhes
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h2 className='text-2xl font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários Taqtile</h2>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
+        {data?.users.nodes.map((user: INode) => (
+          <div
+            key={user.id}
+            className='bg-white shadow-md rounded-md p-4 transition duration-500 hover:scale-105 hover:shadow-lg cursor-pointer'
+          >
+            <h2 className='text-lg font-semibold text-taqtile-font-secondary mb-2'>{user.name.toUpperCase()}</h2>
+            <p className='text-gray-700 mb-2'>E-mail: {user.email}</p>
+            <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
+              Detalhes
+            </button>
+          </div>
+        ))}
       </div>
       <div className='flex justify-center items-center p-4 border-t border-gray-200'>
         <nav className='flex gap-x-2' aria-label='Pagination'>
