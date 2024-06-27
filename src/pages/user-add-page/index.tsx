@@ -7,6 +7,7 @@ import { IUserAdd } from '../../interfaces/interface-user-add';
 import { REGISTER_MUTATION } from '../../graphql/mutation';
 import { SchemaCreateUser } from '../../schemas';
 import { HeaderTitle, InputSubmitRegisterForm } from '../../components';
+import { ButtonSubmit } from '../../components/button-submit-component';
 
 export const UserAddPage: React.FC = () => {
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
@@ -46,10 +47,10 @@ export const UserAddPage: React.FC = () => {
 
   return (
     <>
-      <main className='mt-20 mb-16'>
-        <HeaderTitle title='Adicione um Usuário' className='md:mb-9' />
+      <main className='mt-10  md:mt-20 md:mb-16'>
+        <HeaderTitle title='Adicione um Usuário' className=' mb-9 text-taqtile-font-secondary' />
         <div className='flex flex-col items-center justify-center bg-taqtile-background'>
-          <form onSubmit={handleSubmit(onSubmit)} className='w-1/3'>
+          <form onSubmit={handleSubmit(onSubmit)} className='w-11/12 md:w-1/3'>
             <InputSubmitRegisterForm
               label='Nome'
               name='name'
@@ -138,14 +139,13 @@ export const UserAddPage: React.FC = () => {
               )}
             />
 
-            <button
-              type='submit'
-              disabled={loading}
-              className={`bg-taqtile-green hover:bg-[#004440db] w-full h-12 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              Enviar
-            </button>
-            {loading && <div className='spinner'>Carregando...</div>}
+            <ButtonSubmit
+              text='Cadastrar'
+              isLoading={loading}
+              onClick={() => {
+                handleSubmit(onSubmit)();
+              }}
+            />
 
             {error && <p style={{ color: 'red' }}>Erro ao realizar cadastro.</p>}
           </form>

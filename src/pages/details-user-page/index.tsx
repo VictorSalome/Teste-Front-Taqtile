@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { USER_QUERY_BY_ID } from '../../graphql/query';
 import { IUserAdd } from '../../interfaces/interface-user-add';
@@ -20,37 +20,49 @@ export const DetailsUserPage: React.FC = () => {
   }
 
   if (error) {
-    return <p className='text-center mt-4'>Error: {error.message}</p>;
+    return <p className='text-center mt-4 text-red-500'>Error: {error.message}</p>;
   }
 
   if (!data || !data.user) {
-    return <p className='text-center mt-4'>User not found</p>;
+    return <p className='text-center mt-4 text-gray-500'>User not found</p>;
   }
 
   const { user } = data;
 
   return (
-    <div className='mx-auto max-w-lg p-6 bg-white rounded-xl shadow-md mt-4'>
-      <h2 className='text-2xl font-bold mb-4'>Detalhes do Usuário</h2>
-      <div className='mb-4'>
-        <p className='text-gray-700 font-bold'>Nome:</p>
-        <p className='text-gray-800'>{user.name}</p>
+    <div className='mx-auto max-w-lg p-6 bg-white shadow-lg rounded-lg mt-10'>
+      <h2 className='text-2xl font-semibold text-taqtile-font-secondary mb-6'>Detalhes do Usuário</h2>
+
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
+        <div className='flex flex-col'>
+          <p className='text-base font-semibold text-gray-800'>Nome:</p>
+          <p className='text-base text-gray-600'>{user.name}</p>
+        </div>
+        <div className='flex flex-col'>
+          <p className='text-base font-semibold text-gray-800'>Email:</p>
+          <p className='text-base text-gray-600'>{user.email}</p>
+        </div>
+        <div className='flex flex-col'>
+          <p className='text-base font-semibold text-gray-800'>Telefone:</p>
+          <p className='text-base text-gray-600'>{user.phone}</p>
+        </div>
+        <div className='flex flex-col'>
+          <p className='text-base font-semibold text-gray-800'>Data de Nascimento:</p>
+          <p className='text-base text-gray-600'>{user.birthDate}</p>
+        </div>
+        <div className='flex flex-col'>
+          <p className='text-base font-semibold text-gray-800'>Cargo:</p>
+          <p className='text-base text-gray-600'>{user.role}</p>
+        </div>
       </div>
-      <div className='mb-4'>
-        <p className='text-gray-700 font-bold'>Email:</p>
-        <p className='text-gray-800'>{user.email}</p>
-      </div>
-      <div className='mb-4'>
-        <p className='text-gray-700 font-bold'>Telefone:</p>
-        <p className='text-gray-800'>{user.phone}</p>
-      </div>
-      <div className='mb-4'>
-        <p className='text-gray-700 font-bold'>Data de Nascimento:</p>
-        <p className='text-gray-800'>{user.birthDate}</p>
-      </div>
-      <div className='mb-4'>
-        <p className='text-gray-700 font-bold'>Cargo:</p>
-        <p className='text-gray-800'>{user.role}</p>
+
+      <div className='mt-4'>
+        <Link
+          to='/user-list-page'
+          className='bg-taqtile-font-secondary text-white p-2 rounded-full w-10 h-10 shadow-md transition duration-500  hover:bg-[#01322bdf]'
+        >
+          Voltar para lista de usuários
+        </Link>
       </div>
     </div>
   );

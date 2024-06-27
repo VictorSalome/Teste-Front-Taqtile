@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { IValidationLogin } from '../../interfaces/interface-login';
 import { SchemaValidationLogin } from '../../schemas';
 
-import { HeaderTitle } from '../../components/header-title';
-import { InputSubmitLoginForm, SpinnerLoading } from '../../components';
-
+import { HeaderTitle } from '../../components/header-title-component';
+import { InputSubmitLoginForm } from '../../components';
+import { ButtonSubmit } from '../../components/button-submit-component';
 
 export const LoginPage = () => {
   const {
@@ -23,7 +23,6 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
- 
 
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
@@ -58,17 +57,11 @@ export const LoginPage = () => {
 
   return (
     <>
-   <HeaderTitle title='Bem-vindo(a) à Taqtile!'  className='mt-20 mb-16 md:mt-52 '/>
+      <HeaderTitle title='Bem-vindo(a) à Taqtile!' className='mt-20 mb-16 md:mt-52 ' />
 
       <main className='flex flex-col items-center justify-center bg-taqtile-background'>
         <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-sm p-4'>
-          <InputSubmitLoginForm
-            label='E-mail'
-            name='email'
-            type='text'
-            register={register}
-            error={errors.email}
-          />
+          <InputSubmitLoginForm label='E-mail' name='email' type='text' register={register} error={errors.email} />
           <InputSubmitLoginForm
             label='Senha'
             name='password'
@@ -78,13 +71,7 @@ export const LoginPage = () => {
             showPasswordToggle
           />
           {serverError && <p className='text-red-500 text-xs italic'>{serverError}</p>}
-          <button
-            className={`bg-taqtile-green hover:bg-[#004440db] w-full h-12 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${loading ? 'opacity-50 cursor-not-allowed' : 'bg-taqtile-green hover:bg-[#004440db]'}`}
-            type='submit'
-            disabled={loading}
-          >
-            <span className='flex items-center justify-center '>{loading && <SpinnerLoading />}Entrar</span>
-          </button>
+          <ButtonSubmit isLoading={loading} text='Entrar' onClick={handleSubmit(onSubmit)} />
         </form>
       </main>
     </>
