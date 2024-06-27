@@ -23,9 +23,11 @@ export const RedirectPage: React.FC = () => {
     <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-white p-12 text-center md:text-left'>
       <h1 className='text-4xl font-semibold text-gray-700'>Ops! 😕</h1>
       <div className='mt-4 w-full h-1 bg-gray-200 rounded-full'></div>
-      <p className='mt-4 text-lg text-gray-600'>Você será redirecionado em <span className='font-bold'>{countdown}</span> segundos para a página de login. </p>
+
+      <p className='mt-4 text-lg text-gray-600'>Usuário não autenticado.</p>
+      <p className='mt-4 text-lg text-gray-600'>
+        Você será redirecionado em <span className='font-bold'>{countdown}</span> segundos para a página de login.{' '}
+      </p>
     </div>
   );
 };
-
-

@@ -4,6 +4,7 @@ import { gql } from '@apollo/client';
 export const USERS_QUERY = gql`
   query ListUsers($offset: Int!, $limit: Int!) {
     users(data: { offset: $offset, limit: $limit }) {
+      count
       nodes {
         id
         name
@@ -11,6 +12,12 @@ export const USERS_QUERY = gql`
         phone
         birthDate
         role
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        limit
+        offset
       }
     }
   }

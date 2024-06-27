@@ -5,4 +5,5 @@ export interface IUserAdd {
   birthDate: string;
   password: string;
   role: string;
+  
 }
