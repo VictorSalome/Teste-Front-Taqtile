@@ -1,10 +1,10 @@
 import { IHeaderTitleProps } from "../../interfaces/interface-components";
 
 
-export const HeaderTitle = ({ title }: IHeaderTitleProps) => {
+export const HeaderTitle = ( { title, className }: IHeaderTitleProps) => {
   return (
     <>
-      <header className='mt-20 mb-16 md:mt-52 '>
+      <header className={className}>
         <h1 className='text-taqtile-font-primary text-center text-3xl font-bold'>{title}</h1>
       </header>
     </>

@@ -7,9 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { IValidationLogin } from '../../interfaces/interface-login';
 import { SchemaValidationLogin } from '../../schemas';
 
-import { InputForm } from '../../components/input-form';
 import { HeaderTitle } from '../../components/header-title';
-import { SpinnerLoading } from '../../components';
+import { InputSubmitLoginForm, SpinnerLoading } from '../../components';
 
 
 export const LoginPage = () => {
@@ -59,18 +58,18 @@ export const LoginPage = () => {
 
   return (
     <>
-   <HeaderTitle title='Bem-vindo(a) à Taqtile!' />
+   <HeaderTitle title='Bem-vindo(a) à Taqtile!'  className='mt-20 mb-16 md:mt-52 '/>
 
       <main className='flex flex-col items-center justify-center bg-taqtile-background'>
         <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-sm p-4'>
-          <InputForm
+          <InputSubmitLoginForm
             label='E-mail'
             name='email'
             type='text'
             register={register}
             error={errors.email}
           />
-          <InputForm
+          <InputSubmitLoginForm
             label='Senha'
             name='password'
             type='password'

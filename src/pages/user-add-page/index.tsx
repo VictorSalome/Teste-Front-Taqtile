@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { IUserAdd } from '../../interfaces/interface-user-add';
 import { REGISTER_MUTATION } from '../../graphql/mutation';
 import { SchemaCreateUser } from '../../schemas';
+import { HeaderTitle, InputSubmitRegisterForm } from '../../components';
 
 export const UserAddPage: React.FC = () => {
   const [registerUser, { loading, error }] = useMutation(REGISTER_MUTATION);
@@ -45,60 +46,111 @@ export const UserAddPage: React.FC = () => {
 
   return (
     <>
-      <header>
-        <h1>Cadastro de Usuários</h1>
-      </header>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Nome</label>
-          <Controller name='name' control={control} render={({ field }) => <input id='name' {...field} />} />
-          {errors.name && <p>{errors.name.message}</p>}
+      <main className='mt-20 mb-16'>
+        <HeaderTitle title='Adicione um Usuário' className='md:mb-9' />
+        <div className='flex flex-col items-center justify-center bg-taqtile-background'>
+          <form onSubmit={handleSubmit(onSubmit)} className='w-1/3'>
+            <InputSubmitRegisterForm
+              label='Nome'
+              name='name'
+              control={control}
+              error={errors.name}
+              render={({ field }) => (
+                <input
+                  id='name'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                />
+              )}
+            />
+
+            <InputSubmitRegisterForm
+              label='Email'
+              name='email'
+              control={control}
+              error={errors.email}
+              render={({ field }) => (
+                <input
+                  id='email'
+                  type='email'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                />
+              )}
+            />
+
+            <InputSubmitRegisterForm
+              label='Senha'
+              name='password'
+              control={control}
+              error={errors.password}
+              render={({ field }) => (
+                <input
+                  id='password'
+                  type='password'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                />
+              )}
+            />
+
+            <InputSubmitRegisterForm
+              label='Telefone'
+              name='phone'
+              control={control}
+              error={errors.phone}
+              render={({ field }) => (
+                <input
+                  id='phone'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                />
+              )}
+            />
+
+            <InputSubmitRegisterForm
+              label='Data de nascimento'
+              name='birthDate'
+              control={control}
+              error={errors.birthDate}
+              render={({ field }) => (
+                <input
+                  id='birthDate'
+                  type='date'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                  value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                />
+              )}
+            />
+
+            <InputSubmitRegisterForm
+              label='Cargo'
+              name='role'
+              control={control}
+              error={errors.role}
+              render={({ field }) => (
+                <input
+                  id='role'
+                  className='shadow-md appearance-none border rounded-xl w-full h-12 py-2 px-3 text-taqtile-font-primary leading-tight focus:outline-none focus:shadow-outline'
+                  {...field}
+                />
+              )}
+            />
+
+            <button
+              type='submit'
+              disabled={loading}
+              className={`bg-taqtile-green hover:bg-[#004440db] w-full h-12 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              Enviar
+            </button>
+            {loading && <div className='spinner'>Carregando...</div>}
+
+            {error && <p style={{ color: 'red' }}>Erro ao realizar cadastro.</p>}
+          </form>
         </div>
-
-        <div>
-          <label>Email</label>
-          <Controller name='email' control={control} render={({ field }) => <input id='email' type='email' {...field} />} />
-          {errors.email && <p>{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <label>Senha</label>
-          <Controller name='password' control={control} render={({ field }) => <input id='password' type='password' {...field} />} />
-          {errors.password && <p>{errors.password.message}</p>}
-        </div>
-
-        <div>
-          <label>Telefone</label>
-          <Controller name='phone' control={control} render={({ field }) => <input id='phone' {...field} />} />
-          {errors.phone && <p>{errors.phone.message}</p>}
-        </div>
-
-        <div>
-          <label>Data de nascimento</label>
-          <Controller
-            name='birthDate'
-            control={control}
-            render={({ field }) => (
-              <input id='birthDate' type='date' {...field} value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''} />
-            )}
-          />
-          {errors.birthDate && <p>{errors.birthDate.message}</p>}
-        </div>
-
-        <div>
-          <label>Cargo</label>
-          <Controller name='role' control={control} render={({ field }) => <input id='role' {...field} />} />
-          {errors.role && <p>{errors.role.message}</p>}
-        </div>
-
-        <button type='submit' disabled={loading}>
-          Enviar
-        </button>
-
-        {loading && <div className='spinner'>Carregando...</div>}
-
-        {error && <p style={{ color: 'red' }}>Erro ao realizar cadastro.</p>}
-      </form>
+      </main>
     </>
   );
 };

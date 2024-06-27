@@ -1,8 +1,9 @@
 
-import { UseFormRegister, FieldError } from 'react-hook-form';
+import { UseFormRegister, FieldError, Control } from 'react-hook-form';
 
 export interface IHeaderTitleProps {
     title: string;
+    className?: string
   }
 
 
@@ -11,6 +12,7 @@ export interface IHeaderTitleProps {
     name: string;
     type?: string;
     register: UseFormRegister<any>;
+    control?: UseFormRegister<any>;
     error?: FieldError;
     showPasswordToggle?: boolean;
   }

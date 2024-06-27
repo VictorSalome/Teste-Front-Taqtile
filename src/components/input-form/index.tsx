@@ -1,8 +1,29 @@
-
 import React, { useState } from 'react';
 import { IInputFormProps } from '../../interfaces/interface-components';
+import { Controller, FieldError } from 'react-hook-form';
 
-export const InputForm: React.FC<IInputFormProps> = ({ label, name, type = 'text', register, error, showPasswordToggle = false }) => {
+interface InputSubmitRegisterFormProps {
+  label: string;
+  name: string;
+  control: any;
+  error?: FieldError;
+  render: (args: {
+    field: {
+      value: any;
+      onChange: (...event: any[]) => void;
+      onBlur: () => void;
+    };
+  }) => JSX.Element;
+}
+
+export const InputSubmitLoginForm: React.FC<IInputFormProps> = ({
+  label,
+  name,
+  type = 'text',
+  register,
+  error,
+  showPasswordToggle = false,
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
@@ -23,6 +44,18 @@ export const InputForm: React.FC<IInputFormProps> = ({ label, name, type = 'text
             {showPassword ? 'Ocultar' : 'Mostrar'}
           </button>
         )}
+      </div>
+      {error && <p className='text-red-500 text-xs italic mt-3'>{error.message}</p>}
+    </div>
+  );
+};
+
+export const InputSubmitRegisterForm: React.FC<InputSubmitRegisterFormProps> = ({ label, name, control, error, render }) => {
+  return (
+    <div className='mb-4 w-full'>
+      <label className='block text-taqtile-font-primary text-base font-bold mb-2'>{label}</label>
+      <div className='relative'>
+        <Controller name={name} control={control} render={({ field }) => render({ field })} />
       </div>
       {error && <p className='text-red-500 text-xs italic mt-3'>{error.message}</p>}
     </div>
