@@ -1,14 +1,8 @@
 import React from 'react';
 import { SpinnerLoading } from '../spinner-button-loading-component';
+import { ILoadingButtonProps } from '../../interfaces/interface-components';
 
-interface ILoadingButtonProps {
-  isLoading: boolean;
-  text: string;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  className?: string;
-  disabled?: boolean;
-}
+
 
 export const ButtonSubmit: React.FC<ILoadingButtonProps> = ({
   isLoading,

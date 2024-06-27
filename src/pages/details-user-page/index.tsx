@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { USER_QUERY_BY_ID } from '../../graphql/query';
 import { IUserAdd } from '../../interfaces/interface-user-add';
-import { SpinnerScreenLoading } from '../../components';
+import { ButtonRedirect, SpinnerScreenLoading } from '../../components';
 
 export const DetailsUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,14 +56,7 @@ export const DetailsUserPage: React.FC = () => {
         </div>
       </div>
 
-      <div className='mt-4'>
-        <Link
-          to='/user-list-page'
-          className='bg-taqtile-font-secondary text-white p-2 rounded-full w-10 h-10 shadow-md transition duration-500  hover:bg-[#01322bdf]'
-        >
-          Voltar para lista de usuários
-        </Link>
-      </div>
+      <ButtonRedirect to='/user-list-page' />
     </div>
   );
 };

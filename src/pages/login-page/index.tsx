@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ApolloError, useMutation } from '@apollo/client';
@@ -8,8 +8,8 @@ import { IValidationLogin } from '../../interfaces/interface-login';
 import { SchemaValidationLogin } from '../../schemas';
 
 import { HeaderTitle } from '../../components/header-title-component';
-import { InputSubmitLoginForm } from '../../components';
-import { ButtonSubmit } from '../../components/button-submit-component';
+import { ButtonSubmit, InputSubmitLoginForm } from '../../components';
+
 
 export const LoginPage = () => {
   const {

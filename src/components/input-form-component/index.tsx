@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
-import { IInputFormProps } from '../../interfaces/interface-components';
-import { Controller, FieldError } from 'react-hook-form';
+import { IInputFormProps, IInputSubmitRegisterFormProps } from '../../interfaces/interface-components';
+import { Controller } from 'react-hook-form';
 
-interface InputSubmitRegisterFormProps {
-  label: string;
-  name: string;
-  control: any;
-  error?: FieldError;
-  render: (args: {
-    field: {
-      value: any;
-      onChange: (...event: any[]) => void;
-      onBlur: () => void;
-    };
-  }) => JSX.Element;
-}
+
 
 export const InputSubmitLoginForm: React.FC<IInputFormProps> = ({
   label,
@@ -50,7 +38,7 @@ export const InputSubmitLoginForm: React.FC<IInputFormProps> = ({
   );
 };
 
-export const InputSubmitRegisterForm: React.FC<InputSubmitRegisterFormProps> = ({ label, name, control, error, render }) => {
+export const InputSubmitRegisterForm: React.FC<IInputSubmitRegisterFormProps> = ({ label, name, control, error, render }) => {
   return (
     <div className='mb-4 w-full'>
       <label className='block text-taqtile-font-primary text-base font-bold mb-2'>{label}</label>
