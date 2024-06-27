@@ -1,4 +1,4 @@
-export const SpinerLoading = () => {
+export const SpinnerLoading = () => {
   return (
     <>
       <svg className='w-6 h-6 ml-2 mr-2 animate-spin' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>

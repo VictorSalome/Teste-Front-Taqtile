@@ -1,31 +1,22 @@
 import { useQuery } from '@apollo/client';
 import { USERS_QUERY } from '../../graphql/query';
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import { IListUsers, INode } from '../../interfaces/inteface-users';
+import { SpinnerScreenLoading } from '../../components';
 
 export const UserListPage = () => {
   const token = localStorage.getItem('token');
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(12);
 
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const navigate = useNavigate();
 
-  const updateLimitBasedOnWindowSize = () => {
-    if (window.innerWidth >= 768) {
-      setLimit(24);
-    } else {
-      setLimit(5);
-    }
-  };
-
   useEffect(() => {
-    updateLimitBasedOnWindowSize();
-
-    window.addEventListener('resize', updateLimitBasedOnWindowSize);
-    return () => window.removeEventListener('resize', updateLimitBasedOnWindowSize);
-  }, []);
+    setLimit(isMobile ? 5 : 16);
+  }, [isMobile]);
 
   const { data, loading, error } = useQuery<IListUsers>(USERS_QUERY, {
     variables: {
@@ -52,7 +43,11 @@ export const UserListPage = () => {
   };
 
   if (loading) {
-    return <div className='fixed inset-0 flex items-center justify-center'>Carregando...</div>;
+    return (
+      <div className='fixed inset-0 flex items-center justify-center'>
+        <SpinnerScreenLoading />
+      </div>
+    );
   }
 
   if (error) {
@@ -66,22 +61,52 @@ export const UserListPage = () => {
 
   return (
     <div className='bg-white shadow sm:rounded-lg'>
-      <h2 className='text-2xl font-semibold text-taqtile-font-secondary p-4'>Lista de Usuários Taqtile</h2>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
-        {data?.users.nodes.map((user: INode) => (
-          <div
-            key={user.id}
-            className='bg-white shadow-md rounded-md p-4 transition duration-500 hover:scale-105 hover:shadow-lg cursor-pointer'
-          >
-            <h2 className='text-lg font-semibold text-taqtile-font-secondary mb-2'>{user.name.toUpperCase()}</h2>
-            <p className='text-gray-700 mb-2'>E-mail: {user.email}</p>
-            <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
-              Detalhes
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className='flex justify-center items-center p-4 border-t border-gray-200'>
+      <h2 className='text-3xl font-bold text-taqtile-font-secondary p-4 '>Lista de Usuários Taqtile</h2>
+      {isMobile ? (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
+          {data?.users.nodes.map((user: INode) => (
+            <div
+              key={user.id}
+              className='bg-white shadow-md rounded-md p-4 transition duration-500 hover:scale-105 hover:shadow-lg cursor-pointer'
+            >
+              <h2 className='text-lg font-semibold text-taqtile-font-secondary mb-2'>{user.name.toUpperCase()}</h2>
+              <p className='text-gray-700 mb-2'>E-mail: {user.email}</p>
+              <button className='text-blue-500 hover:underline' onClick={() => navigate(`/details-user-page/${user.id}`)}>
+                Detalhes
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className='overflow-x-auto rounded-lg border border-gray-200 shadow-sm mt-4'>
+          <table className='min-w-full divide-y divide-gray-200 table-fixed'>
+            <thead className='sticky top-0 bg-gray-100'>
+              <tr>
+                <th className='w-1/3 px-6 py-3 text-left text-lg font-semibold text-taqtile-green uppercase tracking-wider'>Nome</th>
+                <th className='w-1/3 px-6 py-3 text-left text-lg font-semibold text-taqtile-green uppercase tracking-wider'>E-mail</th>
+                <th className='w-1/3 px-6 py-3 text-left text-lg font-semibold text-taqtile-green uppercase tracking-wider'></th>
+              </tr>
+            </thead>
+            <tbody className='bg-white divide-y divide-gray-200'>
+              {data?.users.nodes.map((user: INode) => (
+                <tr key={user.id} className='hover:bg-gray-50'>
+                  <td className='px-6 py-4 whitespace-nowrap'>{user.name.toUpperCase()}</td>
+                  <td className='px-6 py-4 whitespace-nowrap'>{user.email}</td>
+                  <td className='px-6 py-4 whitespace-nowrap'>
+                    <button
+                      className='text-taqtile-font-secondary hover:underline'
+                      onClick={() => navigate(`/details-user-page/${user.id}`)}
+                    >
+                      Detalhe
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <div className=' flex justify-center items-center p-3 border-t border-gray-200'>
         <nav className='flex gap-x-2' aria-label='Pagination'>
           <button
             className={`cursor-pointer rounded-l-md ${offset === 0 ? 'text-gray-500' : 'text-gray-700'}`}
@@ -99,15 +124,15 @@ export const UserListPage = () => {
               <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19l-7.5-7.5 7.5-7.5' />
             </svg>
           </button>
-          <ul className='flex flex-wrap gap-x-2'>
+          <ul className='flex flex-wrap gap-x-1'>
             {Array.from({ length: totalPages }, (_, index) => index + 1)
-              .filter((page) => page <= currentPage + 3 && page >= currentPage - 4)
+              .filter((page) => page <= currentPage + 2 && page >= currentPage - 3)
               .map((page) => (
                 <li
                   key={page}
-                  className={`w-8 h-8 flex items-center justify-center rounded-full ${page === currentPage ? 'bg-gray-600 text-white' : 'text-gray-500'}`}
+                  className={`w-6 h-6 flex items-center justify-center rounded-full ${page === currentPage ? 'bg-gray-600 text-white' : 'text-gray-500'}`}
                 >
-                  {page === currentPage - 4 || page === currentPage + 3 ? (
+                  {page === currentPage - 3 || page === currentPage + 2 ? (
                     '...'
                   ) : (
                     <button onClick={() => setOffset((page - 1) * limit)}>{page}</button>

@@ -6,9 +6,10 @@ import { LOGIN_MUTATION } from '../../graphql/mutation';
 import { useNavigate } from 'react-router-dom';
 import { IValidationLogin } from '../../interfaces/interface-login';
 import { SchemaValidationLogin } from '../../schemas';
-import { SpinerLoading } from '../../components';
+
 import { InputForm } from '../../components/input-form';
 import { HeaderTitle } from '../../components/header-title';
+import { SpinnerLoading } from '../../components';
 
 
 export const LoginPage = () => {
@@ -83,7 +84,7 @@ export const LoginPage = () => {
             type='submit'
             disabled={loading}
           >
-            <span className='flex items-center justify-center '>{loading && <SpinerLoading />}Entrar</span>
+            <span className='flex items-center justify-center '>{loading && <SpinnerLoading />}Entrar</span>
           </button>
         </form>
       </main>

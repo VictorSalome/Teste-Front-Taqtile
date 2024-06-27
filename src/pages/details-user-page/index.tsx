@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { USER_QUERY_BY_ID } from '../../graphql/query';
 import { IUserAdd } from '../../interfaces/interface-user-add';
+import { SpinnerScreenLoading } from '../../components';
 
 export const DetailsUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,7 +12,11 @@ export const DetailsUserPage: React.FC = () => {
   });
 
   if (loading) {
-    return <p className='text-center mt-4'>Loading...</p>;
+    return (
+      <div className='fixed inset-0 flex items-center justify-center'>
+        <SpinnerScreenLoading />
+      </div>
+    );
   }
 
   if (error) {
