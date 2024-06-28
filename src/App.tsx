@@ -1,7 +1,14 @@
+import React from 'react';
 import './App.css';
+import { LoginPage } from './pages/login-page';
 
-function App() {
-  return <div className="App">hellou word</div>;
+
+export const App =() => {
+  return (
+    <div>
+      <LoginPage />
+    </div>
+  );
 }
 
-export default App;
+

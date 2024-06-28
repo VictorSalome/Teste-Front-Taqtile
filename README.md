@@ -1,68 +1,58 @@
-# Project Name
-Desafio Taqtile
+# Taqtile
 
-### Candidate: Victor Salome Sousa
-- [LinkedIn](https://www.linkedin.com/in/victorsalome/)
-- [GitHub](https://github.com/VictorSalome)
+Front-end challenge, taqtile.
 
-## Project Description
+It aims to analyze the development of participants
 
-project with the objective of creating a front end application using graphql
+## Environment and Tools
 
-## Environment and Tools \*
+This section describe the environment and Tools used in the project.
 
-# Getting Started with Create React App
+### Environment
+tools used for application development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Tools and Languages
 
-In the project directory, you can run:
+- node version: v22.1.0
+- yarn, however you can use npm
+- React 
+- TypeScript
+- GraphQL
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### code pattern dependencies
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Prettier
+- Eslint
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Steps to Run
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Follow these steps to configure the environment and run the project:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+1. **Clone the Repository:**
 
-### `yarn eject`
+   ```bash
+   git clone https://github.com/VictorSalome/Teste-Front-Taqtile
+   cd test-front-taqtile
+   
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. **install dependencies:**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time.
-This command will remove the single build dependency from your project.
+   ```bash
+    npm install our Yarn
+   
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel,
-ESLint, etc) right into your project so you have full control over them. All of the commands except
-`eject` will still work, but they will point to the copied scripts so you can tweak them. At this
-point you’re on your own.
+3. **start the project:**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle
-deployments, and you shouldn’t feel obligated to use this feature. However we understand that this
-tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   ```bash
+    Yarn start our npm start
 
-## Learn More
+4. **start the project:**
 
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```bash
+   After the previous steps, the server must start on port localhost:3000
+   
