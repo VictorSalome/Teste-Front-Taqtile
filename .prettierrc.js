@@ -6,4 +6,4 @@ module.exports = {
   bracketSpacing: true,
   endOfLine: 'lf',
   jsxSingleQuote: true,
-}; 
+};    

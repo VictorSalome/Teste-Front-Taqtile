@@ -13,16 +13,14 @@ export const LoginPage = () => {
   });
   const [serverError, setServerError] = useState<string>('');
 
-  
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token);
-    
     },
     onError: (error: ApolloError) => {
       if (error.graphQLErrors.length > 0) {
         setServerError(error.graphQLErrors[0].message);
-      } 
+      }
     },
   });
 
@@ -48,18 +46,9 @@ export const LoginPage = () => {
     setServerError('');
 
     if (!emailError && !passwordError) {
-      try {
-        await login({ variables: { email, password } });
-      } catch (error: any) {
-        if (error.graphQLErrors.length > 0) {
-          setServerError(error.graphQLErrors[0].message);
-        } else {
-          console.error('Error:', error);
-        }
-      }
+      await login({ variables: { email, password } });
     }
   };
-
   return (
     <main>
       <header>
