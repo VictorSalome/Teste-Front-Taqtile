@@ -12,19 +12,17 @@ export const LoginPage = () => {
     password: '',
   });
   const [serverError, setServerError] = useState<string>('');
-  console.log(serverError);
+
   
   const [login] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       localStorage.setItem('token', data.login.token);
-      console.log('Login Successful', data);
+    
     },
     onError: (error: ApolloError) => {
       if (error.graphQLErrors.length > 0) {
         setServerError(error.graphQLErrors[0].message);
-      } else {
-        console.log('Error', error);
-      }
+      } 
     },
   });
 
