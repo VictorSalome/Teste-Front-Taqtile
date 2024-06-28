@@ -46,7 +46,7 @@ export const LoginPage = () => {
     if (!emailError && !passwordError) {
       setLoading(true);
       try {
-        await login({ variables: { email: data.email, password: data.password } });
+        await login({ variables: { data: data } });
       } catch (error: any) {
         if (error.graphQLErrors.length > 0) {
           setServerError(error.graphQLErrors[0].message);
