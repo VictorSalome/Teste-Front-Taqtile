@@ -1,5 +1,5 @@
 # Project Name
-Desafio Taqtile - Front end
+Desafio Taqtile
 
 ### Candidate: Victor Salome Sousa
 - [LinkedIn](https://www.linkedin.com/in/victorsalome/)
